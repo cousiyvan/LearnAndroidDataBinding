@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Data Binding</string>
+    <string name="click_btn">Click</string>
+    <string name="hint_txt">Texte à entrer</string>
+    <string name="delete_btn">Effacer</string>
+    <string name="save_btn">Save</string>
+</resources>
