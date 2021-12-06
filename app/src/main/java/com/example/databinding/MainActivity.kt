@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.databinding.database.AppDatabase
 import com.example.databinding.databinding.ActivityMainBinding
+import com.example.databinding.models.Pokemon
 import com.example.databinding.models.User
 import com.example.databinding.repo.UserRepository
 import com.example.databinding.utils.ApiClient
@@ -26,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        executeCall()
+        executePokemonCall()
 
         /*
         val container = findViewById<LinearLayout>(R.id.layoutContainer)
@@ -107,15 +109,70 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Toast.makeText(this@MainActivity, "" +
-                            "Error occured: ${response.message()}",
-                        Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@MainActivity, "" +
+                                "Error occured: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@MainActivity, "" +
-                        "Error occured: ${e.message}",
-                    Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    this@MainActivity, "" +
+                            "Error occured: ${e.message}",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        }
+    }
+
+    private fun executePokemonCall() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            try {
+                val createResponse = ApiClient.apiPokemonService.createPokemon(
+                    Pokemon(99, 777, 2541, "CousiMon", "", listOf("Feuille", "Feu"), Date())
+                )
+
+                val response = ApiClient.apiPokemonService.getPokemonById(99)
+
+                if (response.isSuccessful && response.body() != null) {
+                    val content = response.body()
+                    if (content != null) {
+                        Toast.makeText(
+                            this@MainActivity, "" +
+                                    "Pokemon: Name->${content.name} HP-> ${content.hp} CP-> ${content.cp}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+
+                    val delResponse = ApiClient.apiPokemonService.deletePokemon(99)
+                    if (delResponse.isSuccessful && delResponse.body() != null) {
+                        val content = response.body()
+                        if (content != null) {
+                            Toast.makeText(
+                                this@MainActivity, "" +
+                                        "Pokemon effacer",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        this@MainActivity, "" +
+                                "Error occured: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@MainActivity, "" +
+                            "Error occured: ${e.message}",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
