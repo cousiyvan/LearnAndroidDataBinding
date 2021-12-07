@@ -65,24 +65,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         executePokemonCall()
-
-        /*
-        val container = findViewById<LinearLayout>(R.id.layoutContainer)
-        val mySnackBar = Snackbar.make(container, R.string.click_btn, LENGTH_SHORT)
-
-        userModel.userLikes.observe(this, Observer {
-
-        })
-
-        val userLastNameObserver = Observer<String> { newLastName ->
-            userModel.userFirstName.value = newLastName
-            userModel.incrementLike()
-            mySnackBar.show()
-        }
-
-        userModel.userLastName.observe(this, userLastNameObserver)
-
-         */
     }
 
     private fun executeCall() {
